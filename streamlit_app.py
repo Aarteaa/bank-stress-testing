@@ -318,5 +318,5 @@ st.markdown("""
 For production use, integrate with actual historical bank data.
 
 Built with ❤️ using Python, scikit-learn, and Streamlit | 
-[GitHub Repository](https://github.com/YOUR_USERNAME/bank-stress-testing-ml)
+[GitHub Repository](https://github.com/Aarteaa/bank-stress-testing)
 """)
