@@ -25,7 +25,7 @@ Adjust parameters and scenarios to see how the portfolio performs under differen
 
 # Sidebar for inputs
 st.sidebar.header("📊 Bank Parameters")
-portfolio_size = st.sidebar.number_input("Portfolio Size (₹ Crores)", min_value=1, max_value=10000, value=850)
+portfolio_size = st.sidebar.number_input("Portfolio Size (₹ Lakhs)", min_value=1, max_value=100000, value=8500)
 current_npl = st.sidebar.number_input("Current NPL Ratio (%)", min_value=0.5, max_value=10.0, value=3.0, step=0.1)
 capital_ratio = st.sidebar.number_input("Current Capital Ratio (%)", min_value=8.0, max_value=20.0, value=12.0, step=0.5)
 
@@ -177,15 +177,15 @@ with col2:
 with col3:
     st.metric(
         "Expected Loss",
-        f"₹{results['expected_loss']:.2f} Cr",
+        f"₹{results['expected_loss']:.2f} Lakhs",
         f"{(results['expected_loss']/portfolio_size*100):.1f}% of portfolio"
     )
 
 with col4:
     st.metric(
         "Capital Depletion",
-        f"₹{results['capital_depletion']:.2f} Cr",
-        f"-₹{results['capital_depletion']:.2f} Cr"
+        f"₹{results['capital_depletion']:.2f} Lakhs",
+        f"-₹{results['capital_depletion']:.2f} Lakhs"
     )
 
 # Regulatory compliance
