@@ -25,7 +25,7 @@ Adjust parameters and scenarios to see how the portfolio performs under differen
 
 # Sidebar for inputs
 st.sidebar.header("📊 Bank Parameters")
-portfolio_size = st.sidebar.number_input("Portfolio Size ($M)", min_value=10, max_value=1000, value=100)
+portfolio_size = st.sidebar.number_input("Portfolio Size (₹ Crores)", min_value=1, max_value=10000, value=850)
 current_npl = st.sidebar.number_input("Current NPL Ratio (%)", min_value=0.5, max_value=10.0, value=3.0, step=0.1)
 capital_ratio = st.sidebar.number_input("Current Capital Ratio (%)", min_value=8.0, max_value=20.0, value=12.0, step=0.5)
 
@@ -177,15 +177,15 @@ with col2:
 with col3:
     st.metric(
         "Expected Loss",
-        f"${results['expected_loss']:.1f}M",
+        f"₹{results['expected_loss']:.2f} Cr",
         f"{(results['expected_loss']/portfolio_size*100):.1f}% of portfolio"
     )
 
 with col4:
     st.metric(
         "Capital Depletion",
-        f"${results['capital_depletion']:.1f}M",
-        f"-${results['capital_depletion']:.1f}M"
+        f"₹{results['capital_depletion']:.2f} Cr",
+        f"-₹{results['capital_depletion']:.2f} Cr"
     )
 
 # Regulatory compliance
@@ -293,7 +293,7 @@ st.header("💡 Recommendations")
 
 if results['stressed_capital_ratio'] < 8:
     st.error("🚨 **CRITICAL**: Capital ratio falls below regulatory minimum!")
-    st.write(f"- Immediate capital raising required: ~${(8 * portfolio_size * 0.8 / 100) - (portfolio_size * results['stressed_capital_ratio'] / 100):.1f}M")
+    st.write(f"- Immediate capital raising required: ~₹{(8 * portfolio_size * 0.8 / 100) - (portfolio_size * results['stressed_capital_ratio'] / 100):.2f} Crores")
     st.write("- Consider capital conservation measures")
     st.write("- Review and potentially restrict dividend payments")
 elif results['stressed_capital_ratio'] < 10.5:
@@ -307,7 +307,7 @@ else:
     st.write("- Maintain current risk management practices")
 
 st.write(f"\n**Additional Recommendations:**")
-st.write(f"- Recommended provision buffer: ${results['expected_loss'] * 1.2:.1f}M")
+st.write(f"- Recommended provision buffer: ₹{results['expected_loss'] * 1.2:.2f} Crores")
 st.write(f"- Suggested capital target: {max(results['stressed_capital_ratio'] + 2, 12):.1f}%")
 st.write(f"- Enhanced monitoring required if NPL exceeds {all_results['Moderate Stress']['predicted_npl']:.1f}%")
 
