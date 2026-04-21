@@ -53,31 +53,7 @@ bank-stress-testing-ml/
     └── methodology.md
 ```
 
-## 🚀 Quick Start
 
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/YOUR_USERNAME/bank-stress-testing-ml.git
-cd bank-stress-testing-ml
-```
-
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3. Run the model:
-```bash
-python bank_stress_test.py
-```
-
-### Run as Web App
-
-```bash
-streamlit run streamlit_app.py
-```
 
 ## 📈 Model Performance
 
