@@ -419,7 +419,7 @@ fig4 = go.Figure(go.Heatmap(
     text=[[f"{v}%" for v in row] for row in z],
     texttemplate="%{text}",
     textfont=dict(size=11, color='#e0e4f0'),
-    colorbar=dict(title="GNPA %", tickfont=dict(color='#9ba3b8'), titlefont=dict(color='#9ba3b8')),
+    colorbar=dict(title=dict(text="GNPA %", font=dict(color='#9ba3b8')), tickfont=dict(color='#9ba3b8')),
     showscale=True,
 ))
 fig4.update_layout(**PLOTLY_LAYOUT, height=300,
