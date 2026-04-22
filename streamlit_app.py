@@ -368,30 +368,33 @@ st.plotly_chart(fig2, use_container_width=True)
 # ── Chart 3: SHAP waterfall (Plotly) ──────────────────────────────────────────
 st.markdown('<div class="section-title">SHAP-Style Feature Attribution — What Drives GNPA Change?</div>', unsafe_allow_html=True)
 
-shap_df = pd.DataFrame({
-    'Feature': [LABEL_MAP.get(k,k) for k in shap_c],
-    'Value':   list(shap_c.values())
-}).sort_values('Value', key=abs)
+if scenario == "Baseline":
+    st.info("ℹ️ Select a stress scenario (Moderate / Severe / Tail Risk) from the sidebar to see feature attribution vs Baseline.")
+else:
+    shap_df = pd.DataFrame({
+        'Feature': [LABEL_MAP.get(k,k) for k in shap_c],
+        'Value':   list(shap_c.values())
+    }).sort_values('Value', key=abs)
 
-colors = ['#e05252' if v>0 else '#52b788' for v in shap_df['Value']]
-fig3 = go.Figure(go.Bar(
-    x=shap_df['Value'], y=shap_df['Feature'],
-    orientation='h',
-    marker_color=colors,
-    text=[f"{v:+.2f}%" for v in shap_df['Value']],
-    textposition='outside',
-    textfont=dict(color='#e0e4f0', size=10),
-))
-fig3.add_vline(x=0, line_color='#9ba3b8', line_width=1)
-fig3.update_layout(
-    **PLOTLY_LAYOUT,
-    height=380,
-    title=f"Feature Attribution vs Baseline — {scenario}",
-    xaxis_title="Contribution to GNPA change (%)",
-    yaxis_title="",
-)
-st.plotly_chart(fig3, use_container_width=True)
-st.markdown("""<div class="data-note">
+    colors = ['#e05252' if v>0 else '#52b788' for v in shap_df['Value']]
+    fig3 = go.Figure(go.Bar(
+        x=shap_df['Value'], y=shap_df['Feature'],
+        orientation='h',
+        marker_color=colors,
+        text=[f"{v:+.2f}%" for v in shap_df['Value']],
+        textposition='outside',
+        textfont=dict(color='#e0e4f0', size=10),
+    ))
+    fig3.add_vline(x=0, line_color='#9ba3b8', line_width=1)
+    fig3.update_layout(
+        **PLOTLY_LAYOUT,
+        height=380,
+        title=f"Feature Attribution vs Baseline — {scenario}",
+        xaxis_title="Contribution to GNPA change (%)",
+        yaxis_title="",
+    )
+    st.plotly_chart(fig3, use_container_width=True)
+    st.markdown("""<div class="data-note">
 🔍 <b>How to read:</b> Red bars increase GNPA (more risk); green bars reduce it (protective). 
 MSME Stress Index and Unemployment are typically the top drivers for Small Finance Banks — 
 consistent with RBI FSR empirical findings on SFB vulnerability.
@@ -422,9 +425,10 @@ fig4 = go.Figure(go.Heatmap(
     colorbar=dict(title=dict(text="GNPA %", font=dict(color='#9ba3b8')), tickfont=dict(color='#9ba3b8')),
     showscale=True,
 ))
-fig4.update_layout(**PLOTLY_LAYOUT, height=300,
-    title="Predicted GNPA (%) — GDP Growth vs Unemployment (all other vars at Baseline)",
-    xaxis=dict(side='bottom'))
+heatmap_layout = dict(PLOTLY_LAYOUT)
+heatmap_layout['xaxis'] = dict(gridcolor='#2a3044', linecolor='#2a3044', side='bottom')
+fig4.update_layout(**heatmap_layout, height=300,
+    title="Predicted GNPA (%) — GDP Growth vs Unemployment (all other vars at Baseline)")
 st.plotly_chart(fig4, use_container_width=True)
 
 # ── Model performance ──────────────────────────────────────────────────────────
