@@ -10,6 +10,8 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 import warnings
 warnings.filterwarnings('ignore')
+import matplotlib
+matplotlib.use('Agg')  # Force non-interactive backend — prevents memory issues on Streamlit Cloud
 
 # ─── Page Config ──────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -469,7 +471,7 @@ crar_vals  = [all_scenario_results[s]['stressed_crar'] for s in SCENARIOS]
 loss_vals  = [all_scenario_results[s]['expected_loss_cr'] for s in SCENARIOS]
 erode_vals = [all_scenario_results[s]['capital_eroded_cr'] for s in SCENARIOS]
 
-fig, axes = plt.subplots(1, 4, figsize=(18, 4.5))
+fig, axes = plt.subplots(1, 4, figsize=(14, 4), dpi=90)
 fig.patch.set_facecolor('#0f1117')
 
 def style_ax(ax, title, ylabel):
@@ -510,11 +512,12 @@ style_ax(axes[3], 'Total Capital Erosion (₹Cr)', '₹ Crore')
 
 plt.tight_layout(pad=1.5)
 st.pyplot(fig)
+plt.close(fig)
 
 # ─── Monte Carlo Distribution ─────────────────────────────────────────────────
 st.markdown('<div class="section-title">Monte Carlo Simulation — Loss Distribution</div>', unsafe_allow_html=True)
 
-fig2, axes2 = plt.subplots(1, 3, figsize=(18, 4.5))
+fig2, axes2 = plt.subplots(1, 3, figsize=(14, 4), dpi=90)
 fig2.patch.set_facecolor('#0f1117')
 
 # GNPA distribution
@@ -558,6 +561,7 @@ ax.yaxis.grid(True, color=GRID, alpha=0.5); ax.set_axisbelow(True)
 
 plt.tight_layout(pad=1.5)
 st.pyplot(fig2)
+plt.close(fig2)
 
 # ─── SHAP Feature Attribution ─────────────────────────────────────────────────
 st.markdown('<div class="section-title">SHAP-Style Feature Attribution — What Drives GNPA Change?</div>', unsafe_allow_html=True)
@@ -583,7 +587,7 @@ label_map = {
 shap_df['Label'] = shap_df['Feature'].map(label_map)
 shap_df['Color'] = shap_df['Contribution'].apply(lambda x: '#e05252' if x > 0 else '#52b788')
 
-fig3, ax3 = plt.subplots(figsize=(10, 5))
+fig3, ax3 = plt.subplots(figsize=(9, 4), dpi=90)
 fig3.patch.set_facecolor('#0f1117')
 ax3.set_facecolor(BG)
 
@@ -606,6 +610,7 @@ for bar, val in zip(bars, shap_df['Contribution']):
 
 plt.tight_layout()
 st.pyplot(fig3)
+plt.close(fig3)
 
 st.markdown(f"""<div class="data-note">
 📊 <b>How to read this:</b> Each bar shows how much that feature's stressed value (vs baseline) contributes 
